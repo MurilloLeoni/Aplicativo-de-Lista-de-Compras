@@ -23,7 +23,7 @@ class _LoginViewState extends State<LoginView> {
       appBar: AppBar(
         title: Text('Tela de Login'),
         centerTitle: true,
-        backgroundColor: Colors.red,
+        backgroundColor: Color.fromARGB(255, 0, 13, 255),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(50, 100, 50, 100),
@@ -44,19 +44,6 @@ class _LoginViewState extends State<LoginView> {
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.man),
                 ),
-                //
-                // VALIDAÇÃO
-                //
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Informe um CPF';
-                  } else if (value.length != 11 ||
-                      int.tryParse(value) == null) {
-                    return 'Informe um CPF válido com 11 números';
-                  }
-                  // Retornar null significa sucesso na validação
-                  return null;
-                },
               ),
               SizedBox(height: 30),
               TextFormField(
@@ -83,30 +70,25 @@ class _LoginViewState extends State<LoginView> {
               //
               // BOTÃO
               //
-              //ElevatedButton, OutlinedButton, TextButton
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue.shade100,
-                  foregroundColor: Colors.blue.shade900,
+                  backgroundColor: Color.fromARGB(255, 143, 143, 143),
+                  foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                   minimumSize: Size(200, 50),
-                  shadowColor: Colors.red,
                 ),
-                onPressed: () {
-                  //
-                  // Chamar os validadores dos campos de texto
-                  //
-                  if (formKey.currentState!.validate()) {
-                    //Form validado com sucesso
-                  }
-                },
+                onPressed: () {},
                 child: Text('LOGIN'),
               ),
               SizedBox(height: 30),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(
+                  context,
+                  'password',
+                );
+                },
                 child: Text('Esqueceu a senha?'),
               ),
-
               SizedBox(height: 30),
               TextButton(
                 onPressed: () {},

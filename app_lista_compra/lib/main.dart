@@ -3,6 +3,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
  
 import 'view/login_view.dart';
+import 'view/password_view.dart';
  
 void main() {
   runApp(
@@ -24,6 +25,7 @@ class MainApp extends StatelessWidget {
       initialRoute: 'login',
       routes: {
         'login': (context) => LoginView(),
+        'password': (context) => PasswordView(),
       },
     );
   }
