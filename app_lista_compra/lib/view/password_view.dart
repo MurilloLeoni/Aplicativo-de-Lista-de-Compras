@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class PasswordView extends StatefulWidget {
@@ -48,7 +50,9 @@ class _PasswordViewState extends State<PasswordView> {
                   foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                   minimumSize: Size(200, 50),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, 'login');
+                },
                 child: Text('Redefinir senha'),
               ),
               SizedBox(height: 30),

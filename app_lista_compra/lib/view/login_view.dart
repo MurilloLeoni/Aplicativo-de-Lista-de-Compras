@@ -40,9 +40,9 @@ class _LoginViewState extends State<LoginView> {
 
                 style: TextStyle(fontSize: 32),
                 decoration: InputDecoration(
-                  labelText: 'CPF',
+                  labelText: 'Email',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.man),
+                  prefixIcon: Icon(Icons.email),
                 ),
               ),
               SizedBox(height: 30),
@@ -91,7 +91,9 @@ class _LoginViewState extends State<LoginView> {
               ),
               SizedBox(height: 30),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, 'registration');
+                },
                 child: Text('Cadastre-se'),
               ),
             ],
