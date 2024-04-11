@@ -19,11 +19,6 @@ class _StartViewState extends State<StartView> {
         centerTitle: true,
         backgroundColor: Color.fromARGB(255, 0, 13, 255),
       ),
-      /* Image.asset(
-            '../lib/imagens/carrinho.jpg',
-            width: 200,
-            height: 200,
-          ), */
       body: Column(
         //Alinhamento EIXO PRINCIPAL
         mainAxisAlignment: MainAxisAlignment.end,
@@ -33,6 +28,7 @@ class _StartViewState extends State<StartView> {
             '../lib/imagens/carrinho.jpg',
             width: 200,
             height: 200,
+            alignment: Alignment.topCenter,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +47,12 @@ class _StartViewState extends State<StartView> {
               Expanded(
                 child: Container(
                   child: ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                  context,
+                  'sobre',
+                );
+                    },
                     icon: Icon(Icons.info),
                     label: Text('Sobre'),
                   ),

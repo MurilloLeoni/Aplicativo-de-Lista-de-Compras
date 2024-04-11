@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'view/login_view.dart';
 import 'view/password_view.dart';
 import 'view/registration_view.dart';
+import 'view/sobre_view.dart';
 import 'view/start_view.dart';
 
 void main() {
@@ -30,6 +31,7 @@ class MainApp extends StatelessWidget {
         'password': (context) => PasswordView(),
         'registration': (context) => RegistrationView(),
         'start': (context) => StartView(),
+        'sobre': (context) => SobreView(),
       },
     );
   }

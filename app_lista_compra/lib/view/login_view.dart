@@ -76,7 +76,12 @@ class _LoginViewState extends State<LoginView> {
                   foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                   minimumSize: Size(200, 50),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(
+                  context,
+                  'start',
+                );
+                },
                 child: Text('LOGIN'),
               ),
               SizedBox(height: 30),
@@ -98,7 +103,9 @@ class _LoginViewState extends State<LoginView> {
               ),
             ],
           ),
+          
         ),
+        
       ),
     );
   }
