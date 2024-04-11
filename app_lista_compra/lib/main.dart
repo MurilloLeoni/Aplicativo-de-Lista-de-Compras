@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'view/login_view.dart';
 import 'view/password_view.dart';
 import 'view/registration_view.dart';
- 
+import 'view/start_view.dart';
+
 void main() {
   runApp(
     DevicePreview(
@@ -28,6 +29,7 @@ class MainApp extends StatelessWidget {
         'login': (context) => LoginView(),
         'password': (context) => PasswordView(),
         'registration': (context) => RegistrationView(),
+        'start': (context) => StartView(),
       },
     );
   }
