@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class StartView extends StatefulWidget {
   const StartView({super.key});
@@ -30,6 +31,20 @@ class _StartViewState extends State<StartView> {
             height: 200,
             alignment: Alignment.topCenter,
           ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 21, 0, 255),
+              foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+              minimumSize: Size(170, 50),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                'lista',
+              );
+            },
+            child: Text('+ NOVA LISTA'),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -49,9 +64,9 @@ class _StartViewState extends State<StartView> {
                   child: ElevatedButton.icon(
                     onPressed: () {
                       Navigator.pushNamed(
-                  context,
-                  'sobre',
-                );
+                        context,
+                        'sobre',
+                      );
                     },
                     icon: Icon(Icons.info),
                     label: Text('Sobre'),

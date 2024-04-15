@@ -2,6 +2,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
  
+import 'view/lista_view.dart';
 import 'view/login_view.dart';
 import 'view/password_view.dart';
 import 'view/registration_view.dart';
@@ -32,6 +33,7 @@ class MainApp extends StatelessWidget {
         'registration': (context) => RegistrationView(),
         'start': (context) => StartView(),
         'sobre': (context) => SobreView(),
+        'lista': (context) => ListaView(),
       },
     );
   }
