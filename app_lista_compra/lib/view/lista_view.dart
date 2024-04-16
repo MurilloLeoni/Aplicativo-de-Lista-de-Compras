@@ -10,10 +10,23 @@ class ListaView extends StatefulWidget {
 
 class _ListaViewState extends State<ListaView> {
   var formKey = GlobalKey<FormState>();
+  late TextEditingController txtValor1;
+
+  @override
+  void initState() {
+    super.initState();
+    txtValor1 = TextEditingController(); // Inicializando o controlador
+  }
+
+  @override
+  void dispose() {
+    // Lembre-se de descartar o controlador ao finalizar o estado
+    txtValor1.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var txtValor1;
     String hintText = 'Nova lista';
     return Scaffold(
       appBar: AppBar(
@@ -57,7 +70,12 @@ class _ListaViewState extends State<ListaView> {
                 foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                 minimumSize: Size(200, 50),
               ),
-              onPressed: () {},
+              onPressed: () {
+                // Obtém o valor do TextFormField
+                String novaLista = txtValor1.text;
+                // Fecha a tela atual e retorna para a tela anterior, passando o valor da nova lista
+                Navigator.pop(context, novaLista);
+              },
               child: Text(
                 'CRIAR',
                 style: TextStyle(fontSize: 18),

@@ -37,7 +37,6 @@ class _LoginViewState extends State<LoginView> {
               //
               TextFormField(
                 controller: txtValor1,
-
                 style: TextStyle(fontSize: 32),
                 decoration: InputDecoration(
                   labelText: 'Email',
@@ -78,9 +77,9 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 onPressed: () {
                   Navigator.pushNamed(
-                  context,
-                  'start',
-                );
+                    context,
+                    'start',
+                  );
                 },
                 child: Text('LOGIN'),
               ),
@@ -88,9 +87,9 @@ class _LoginViewState extends State<LoginView> {
               TextButton(
                 onPressed: () {
                   Navigator.pushNamed(
-                  context,
-                  'password',
-                );
+                    context,
+                    'password',
+                  );
                 },
                 child: Text('Esqueceu a senha?'),
               ),
@@ -103,9 +102,7 @@ class _LoginViewState extends State<LoginView> {
               ),
             ],
           ),
-          
         ),
-        
       ),
     );
   }
