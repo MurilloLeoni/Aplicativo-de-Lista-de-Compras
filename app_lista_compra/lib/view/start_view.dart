@@ -18,20 +18,23 @@ class _StartViewState extends State<StartView> {
       appBar: AppBar(
         title: Text('LISTAS'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 0, 13, 255),
+        backgroundColor: Color.fromARGB(255, 37, 255, 25),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView.builder(
           itemCount: allLists.length,
           itemBuilder: (context, index) {
+            String listName = allLists[index][0];
+            List<String> items = allLists[index].sublist(1);
+
             return Card(
               child: ListTile(
                 title: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        allLists[index][0].toUpperCase(),
+                        listName.toUpperCase(),
                         style: TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
@@ -39,36 +42,15 @@ class _StartViewState extends State<StartView> {
                       ),
                     ),
                     IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        _renameListDialog(context, index, listName);
+                      },
+                    ),
+                    IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Confirmação'),
-                              content: Text(
-                                  'Tem certeza que deseja excluir esta lista?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('Cancelar'),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      allLists.removeAt(index);
-                                    });
-                                    Navigator.of(context)
-                                        .pop(); // Fecha o pop-up após a exclusão
-                                  },
-                                  child: Text('Confirmar'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        _confirmDeleteListDialog(context, index);
                       },
                     ),
                   ],
@@ -78,8 +60,9 @@ class _StartViewState extends State<StartView> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ItemView(
-                          listName: allLists[index][0],
-                          items: allLists[index].sublist(1)),
+                        listName: listName,
+                        items: items,
+                      ),
                     ),
                   );
                 },
@@ -88,13 +71,107 @@ class _StartViewState extends State<StartView> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _createNewListDialog(context);
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            'Clique no botão ao lado\n para criar suas listas!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              color: const Color.fromARGB(255, 0, 0, 0),
+            ),
+          ),
+          SizedBox(width: 50),
+          FloatingActionButton(
+            onPressed: () {
+              _createNewListDialog(context);
+            },
+            backgroundColor: const Color.fromARGB(255, 108, 105, 105),
+            foregroundColor: Color.fromARGB(
+                255, 255, 255, 255), // Altera a cor do botão para vermelho
+            child: Icon(Icons.add),
+          ),
+        ],
       ),
     );
+  }
+
+  void _renameListDialog(BuildContext context, int index, String currentName) {
+    String newName = currentName;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Novo Nome da Lista'),
+          content: TextField(
+            onChanged: (value) {
+              newName = value;
+            },
+            controller: TextEditingController(text: currentName),
+            decoration:
+                InputDecoration(hintText: 'Digite o novo nome da lista'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (newName.isNotEmpty && newName != currentName) {
+                  _renameList(index, newName);
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Text('Salvar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _renameList(int index, String newName) {
+    setState(() {
+      allLists[index][0] = newName;
+    });
+  }
+
+  void _confirmDeleteListDialog(BuildContext context, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmação'),
+          content: Text('Tem certeza que deseja excluir esta lista?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _deleteList(index);
+                Navigator.of(context).pop(); // Fecha o pop-up após a exclusão
+              },
+              child: Text('Confirmar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _deleteList(int index) {
+    setState(() {
+      allLists.removeAt(index);
+    });
   }
 
   void _createNewListDialog(BuildContext context) {
@@ -135,7 +212,7 @@ class _StartViewState extends State<StartView> {
 
   void _createNewList(String listName) {
     setState(() {
-      allLists.add(List.generate(10, (index) => listName));
+      allLists.add([listName]);
     });
   }
 }

@@ -15,15 +15,10 @@ class _ItemViewState extends State<ItemView> {
   List<FoodItem> foodItems = []; // Lista de alimentos
 
   final TextEditingController _textEditingController = TextEditingController();
-  final FocusNode _textFocusNode =
-      FocusNode(); // Para controlar o foco no campo de texto
-  final FocusNode _quantityFocusNode =
-      FocusNode(); // Para controlar o foco no campo de quantidade
 
   @override
   void initState() {
     super.initState();
-    // foodItems.addAll(widget.items); // Removido para iniciar com lista vazia
   }
 
   @override
@@ -33,7 +28,7 @@ class _ItemViewState extends State<ItemView> {
         title: Text(
           'Lista ${widget.listName}'.toUpperCase(),
         ),
-        backgroundColor: Color.fromARGB(255, 0, 13, 255),
+        backgroundColor: Color.fromARGB(255, 37, 255, 25),
         centerTitle: true,
       ),
       body: Column(
@@ -46,23 +41,16 @@ class _ItemViewState extends State<ItemView> {
                 Expanded(
                   child: TextField(
                     controller: _textEditingController,
-                    focusNode: _textFocusNode,
                     decoration: InputDecoration(
                       hintText: 'Digite um alimento',
                     ),
-                    onSubmitted: (value) {
-                      _textFocusNode
-                          .unfocus(); // Remove o foco do campo de texto
-                      _quantityFocusNode
-                          .requestFocus(); // Dá foco ao campo de quantidade
-                    },
+                    onSubmitted: (value) {},
                   ),
                 ),
                 SizedBox(width: 8.0),
-                Container(
+                SizedBox(
                   width: 80.0,
                   child: TextField(
-                    focusNode: _quantityFocusNode,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       hintText: 'Qtd',
@@ -70,9 +58,7 @@ class _ItemViewState extends State<ItemView> {
                     onSubmitted: (value) {
                       _addFoodItem(_textEditingController.text,
                           value); // Adiciona o alimento
-                      _textEditingController.clear(); // Limpa o campo de texto
-                      _textFocusNode
-                          .requestFocus(); // Dá foco novamente ao campo de texto
+                      _textEditingController.clear();
                     },
                   ),
                 ),
@@ -105,9 +91,15 @@ class _ItemViewState extends State<ItemView> {
                       children: [
                         Expanded(
                           child: Text(
-                            '${foodItems[index].name} (${foodItems[index].quantity})',
+                            '${foodItems[index].name} (Qntd:${foodItems[index].quantity})',
                             style: TextStyle(fontSize: 18),
                           ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            _editFoodItem(index); // Editar o item
+                          },
                         ),
                         IconButton(
                           icon: Icon(Icons.delete),
@@ -157,10 +149,6 @@ class _ItemViewState extends State<ItemView> {
                 onChanged: (value) {
                   name = value;
                 },
-                onSubmitted: (value) {
-                  quantity =
-                      value; // Quando o usuário pressionar "Enter", define a quantidade
-                },
               ),
               SizedBox(height: 8.0),
               TextField(
@@ -193,11 +181,68 @@ class _ItemViewState extends State<ItemView> {
       },
     );
   }
+
+  void _editFoodItem(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String name = foodItems[index].name;
+        String quantity = foodItems[index].quantity;
+
+        return AlertDialog(
+          title: Text('Editar Alimento'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Nome do Alimento',
+                ),
+                controller: TextEditingController(text: name),
+                onChanged: (value) {
+                  name = value;
+                },
+              ),
+              SizedBox(height: 8.0),
+              TextField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Quantidade',
+                ),
+                controller: TextEditingController(text: quantity),
+                onChanged: (value) {
+                  quantity = value;
+                },
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  foodItems[index].name = name;
+                  foodItems[index].quantity = quantity;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Salvar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class FoodItem {
-  final String name;
-  final String quantity;
+  String name;
+  String quantity;
   bool isChecked;
 
   FoodItem(

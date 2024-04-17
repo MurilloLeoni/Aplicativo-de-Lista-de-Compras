@@ -33,6 +33,10 @@ class MainApp extends StatelessWidget {
         'registration': (context) => RegistrationView(),
         'sobre': (context) => SobreView(),
         'start': (context) => StartView(),
+        'item': (context) => ItemView(
+              items: [],
+              listName: '',
+            ),
       },
     );
   }

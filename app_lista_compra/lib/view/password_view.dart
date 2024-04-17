@@ -19,9 +19,9 @@ class _PasswordViewState extends State<PasswordView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Esqueceu senha'),
+        title: Text('ESQUECEU SENHA'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 0, 13, 255),
+        backgroundColor: Color.fromARGB(255, 37, 255, 25),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(50, 100, 50, 100),

@@ -22,9 +22,9 @@ class _RegistrationViewState extends State<RegistrationView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastre-se'),
+        title: Text('CADASTRE-SE'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 0, 13, 255),
+        backgroundColor: Color.fromARGB(255, 37, 255, 25),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(50, 100, 50, 100),

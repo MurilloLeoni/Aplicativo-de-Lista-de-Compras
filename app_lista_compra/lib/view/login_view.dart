@@ -11,8 +11,6 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   var formKey = GlobalKey<FormState>();
-
-  //Controladores dos Campos de Texto
   var txtValor1 = TextEditingController();
   var txtValor2 = TextEditingController();
   bool _obscureText = true;
@@ -21,9 +19,17 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tela de Login'),
+        title: Text('LOGIN'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 0, 13, 255),
+        backgroundColor: Color.fromARGB(255, 37, 255, 25),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'sobre');
+            },
+            icon: Icon(Icons.info),
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(50, 100, 50, 100),
@@ -32,9 +38,6 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             children: [
               SizedBox(height: 30),
-              //
-              // CAMPO DE TEXTO
-              //
               TextFormField(
                 controller: txtValor1,
                 style: TextStyle(fontSize: 32),
@@ -66,9 +69,6 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
               SizedBox(height: 30),
-              //
-              // BOTÃO
-              //
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 143, 143, 143),
