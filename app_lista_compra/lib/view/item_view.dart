@@ -5,7 +5,8 @@ class ItemView extends StatefulWidget {
   final String listName;
   final List<String> items;
 
-  const ItemView({super.key, required this.listName, required this.items});
+  const ItemView({Key? key, required this.listName, required this.items})
+      : super(key: key);
 
   @override
   State<ItemView> createState() => _ItemViewState();
@@ -13,12 +14,19 @@ class ItemView extends StatefulWidget {
 
 class _ItemViewState extends State<ItemView> {
   List<FoodItem> foodItems = []; // Lista de alimentos
+  List<FoodItem> filteredItems = []; // Lista de alimentos filtrados
 
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    // Inicialize foodItems com base nos items passados
+    for (String item in widget.items) {
+      foodItems.add(FoodItem(name: item, quantity: ''));
+    }
+    filteredItems
+        .addAll(foodItems); // Inicialize filteredItems com base em foodItems
   }
 
   @override
@@ -30,6 +38,14 @@ class _ItemViewState extends State<ItemView> {
         ),
         backgroundColor: Color.fromARGB(255, 37, 255, 25),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(context: context, delegate: FoodItemSearch(foodItems));
+            },
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -74,16 +90,16 @@ class _ItemViewState extends State<ItemView> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: foodItems.length,
+              itemCount: filteredItems.length,
               itemBuilder: (context, index) {
                 return Card(
                   color: Colors.white, // Define o fundo do card como branco
                   child: ListTile(
                     leading: Checkbox(
-                      value: foodItems[index].isChecked,
+                      value: filteredItems[index].isChecked,
                       onChanged: (bool? value) {
                         setState(() {
-                          foodItems[index].isChecked = value ?? false;
+                          filteredItems[index].isChecked = value ?? false;
                         });
                       },
                     ),
@@ -91,7 +107,7 @@ class _ItemViewState extends State<ItemView> {
                       children: [
                         Expanded(
                           child: Text(
-                            '${foodItems[index].name} (Qntd:${foodItems[index].quantity})',
+                            '${filteredItems[index].name} (Qntd:${filteredItems[index].quantity})',
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
@@ -105,7 +121,7 @@ class _ItemViewState extends State<ItemView> {
                           icon: Icon(Icons.delete),
                           onPressed: () {
                             setState(() {
-                              foodItems.removeAt(index);
+                              filteredItems.removeAt(index);
                             });
                           },
                         ),
@@ -125,6 +141,10 @@ class _ItemViewState extends State<ItemView> {
     if (name.isNotEmpty && quantity.isNotEmpty) {
       setState(() {
         foodItems.add(FoodItem(name: name, quantity: quantity));
+        // Se o item passar no filtro atual, adicione-o aos itens filtrados também
+        if (_passesFilter(name)) {
+          filteredItems.add(FoodItem(name: name, quantity: quantity));
+        }
       });
     }
   }
@@ -186,8 +206,8 @@ class _ItemViewState extends State<ItemView> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        String name = foodItems[index].name;
-        String quantity = foodItems[index].quantity;
+        String name = filteredItems[index].name;
+        String quantity = filteredItems[index].quantity;
 
         return AlertDialog(
           title: Text('Editar Alimento'),
@@ -226,8 +246,8 @@ class _ItemViewState extends State<ItemView> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  foodItems[index].name = name;
-                  foodItems[index].quantity = quantity;
+                  filteredItems[index].name = name;
+                  filteredItems[index].quantity = quantity;
                 });
                 Navigator.of(context).pop();
               },
@@ -238,6 +258,12 @@ class _ItemViewState extends State<ItemView> {
       },
     );
   }
+
+  // Função para verificar se um item passa pelo filtro atual
+  bool _passesFilter(String name) {
+    String filterText = _textEditingController.text.toLowerCase();
+    return name.toLowerCase().contains(filterText);
+  }
 }
 
 class FoodItem {
@@ -247,4 +273,66 @@ class FoodItem {
 
   FoodItem(
       {required this.name, required this.quantity, this.isChecked = false});
+}
+
+// Classe para controlar a pesquisa de itens
+class FoodItemSearch extends SearchDelegate<FoodItem> {
+  final List<FoodItem> foodItems;
+
+  FoodItemSearch(this.foodItems);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, '' as FoodItem);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    final List<FoodItem> results = foodItems
+        .where((foodItem) =>
+            foodItem.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return _buildSearchResults(results);
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final List<FoodItem> suggestions = foodItems
+        .where((foodItem) =>
+            foodItem.name.toLowerCase().startsWith(query.toLowerCase()))
+        .toList();
+    return _buildSearchResults(suggestions);
+  }
+
+  Widget _buildSearchResults(List<FoodItem> items) {
+    return ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final FoodItem item = items[index];
+        return ListTile(
+          title: Text('${item.name} (Qntd:${item.quantity})'),
+          onTap: () {
+            close(context, item);
+          },
+        );
+      },
+    );
+  }
 }
