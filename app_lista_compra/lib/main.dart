@@ -2,6 +2,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
+import 'view/Anula_view.dart';
 import 'view/item_view.dart';
 import 'view/lista_view.dart';
 import 'view/login_view.dart';
@@ -32,7 +33,7 @@ class MainApp extends StatelessWidget {
         'login': (context) => LoginView(),
         'password': (context) => PasswordView(),
         'registration': (context) => RegistrationView(),
-        //'start': (context) => StartView(),
+        'anula': (context) => AnulaView(),
         'sobre': (context) => SobreView(),
         'lista': (context) => ListaView(),
         'start': (context) => StartView(),
